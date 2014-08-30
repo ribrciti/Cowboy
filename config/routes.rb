@@ -1,23 +1,27 @@
 Rails.application.routes.draw do
-  get 'page/home'
+  
+  get 'home' => "page#home" 
 
-  get 'page/contact_us'
+  #get 'contact_us' => "page#contact_us"
+  #post 'contact_us' => "page#contact_us"
+  
+  match "contact_us" => "page#contact_us", :via => [:post, :get]
 
-  get 'page/about_us'
+  get 'about_us' => "page#about_us"
 
-  get 'page/products'
+  get 'products' => "page#products"
 
-  get 'page/newsletter'
+  get 'newsletter' => "page#newsletter"
 
-  get 'page/blog'
+  get 'blog' => "page#blog"
 
-  get 'page/calendar'
+  get 'page/calendar(/:year(/:month))' => "page#calendar", :as => 'calendar'
 
-  get 'page/articles'
+  get 'articles' => "page#articles"
 
-  get 'page/login'
+  get 'login' => "page#login"
 
-  get 'rick/teach'
+  get 'rick/teach' 
 
   get 'rick/speak'
 
@@ -28,8 +32,9 @@ Rails.application.routes.draw do
   # The priority is based upon order of creation: first created -> highest priority.
   # See how all your routes lay out with "rake routes".
 
-  # You can have the root of your site routed with "root"
-  # root 'welcome#index'
+  # root 'page#home'
+  root 'page#home'
+  
 
   # Example of regular route:
   #   get 'products/:id' => 'catalog#view'
