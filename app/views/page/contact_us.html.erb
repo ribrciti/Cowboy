@@ -3,6 +3,10 @@
 Your name is <%= @name %><br/>
 Your email is <%= @email %><br/>
 
+<% if flash['error'] %>
+	<div class='error'><%= flash['error'] %></div> 
+<% end %>
+
 #The following is for debugging purposes...take out for production
 <pre>
 <% params.each do |key, value| %>
@@ -10,28 +14,33 @@ Your email is <%= @email %><br/>
 <% end %>
 </pre>
 
-<%= @error_message %><br/>
-<%= form_for contact_us_path, :method =>"Post" do %>
-	<%= label_tag :name, "Enter your Full Name: " %>
-	<%= text_field_tag :name, @name, :autofocus => "autofocus", :placeholder => "Enter you name" %><br/>
-	
-
-	<%= label_tag :email, "Enter your Email Address: " %>
-	<%= email_field_tag :email, @email, :placeholder => "example@here.com" %><br/>
-	<%= label_tag :question, "Enter your question:" %><br/>
-	<%= text_area_tag :question, @question, :size => "50x10" %>
+<% if !@submitted || @form_error %>
 	<br/>
-	<%= check_box_tag :newsletter, "newsletter", @newsletter %>
-	Subscribe to my newsletter?
-	<br/>
-	<%= radio_button_tag :gender, "Male", @male %> Male<br/>
-	<%= radio_button_tag :gender, "Female", @female %> Female<br/>
+	<%= form_for contact_us_path, :method =>"Post" do %>
+		<%= label_tag :name, "Enter your Full Name: " %>
+		<%= text_field_tag :name, @name, :autofocus => "autofocus", :placeholder => "Enter you name" %><br/>
+		
 
-	<%= select_tag :product, options_for_select([['Skis', 0], ['Poles', 1], ['Boots', 2], ], @product) %>
+		<%= label_tag :email, "Enter your Email Address: " %>
+		<%= email_field_tag :email, @email, :placeholder => "example@here.com" %><br/>
+		<%= label_tag :question, "Enter your question:" %><br/>
+		<%= text_area_tag :question, @question, :size => "50x10" %>
+		<br/>
+		<%= check_box_tag :newsletter, "newsletter", @newsletter %>
+		Subscribe to my newsletter?
+		<br/>
+		<%= radio_button_tag :gender, "Male", @male %> Male<br/>
+		<%= radio_button_tag :gender, "Female", @female %> Female<br/>
+
+		<%= select_tag :product, options_for_select([['Skis', 0], ['Poles', 1], ['Boots', 2], ], @product) %>
 
 
-	<br/>
-	<%= submit_tag "Ask Question" %>
+		<br/>
+		<%= submit_tag "Ask Question" %>
+	<% end %>
+<% else %>
+	Thanks for your information.
+
 <% end %>
 
 

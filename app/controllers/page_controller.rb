@@ -7,9 +7,12 @@ class PageController < ApplicationController
   end
 
   def contact_us
+    @submitted = params["commit"]
+    @form_error = false
     @name = params["name"]
     if @name ==""
-      @error_msg = "Must enter your name!"
+      flash["error"] = "Must enter your name!"
+      @form_error = true
     end
     @email = params["email"]
     @question = params["question"]
@@ -33,6 +36,7 @@ class PageController < ApplicationController
   end
 
   def calendar
+
     @time = Time.now
     @month = params['month'].to_i
     @year = params['year'].to_i
@@ -42,6 +46,7 @@ class PageController < ApplicationController
     if (@year <= 0)
       @year = @time.strftime( "%Y" ).to_i
     end
+
   end
 
   def login

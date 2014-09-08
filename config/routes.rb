@@ -1,5 +1,13 @@
 Rails.application.routes.draw do
   
+  devise_for :users
+  resources :movies do
+    get 'page/:page', :action => :index, :on => :collection
+  end
+
+
+  get 'people/index'
+
   get 'home' => "page#home" 
 
   #get 'contact_us' => "page#contact_us"
@@ -8,8 +16,6 @@ Rails.application.routes.draw do
   match "contact_us" => "page#contact_us", :via => [:post, :get]
 
   get 'about_us' => "page#about_us"
-
-  get 'products' => "page#products"
 
   get 'newsletter' => "page#newsletter"
 
@@ -35,7 +41,6 @@ Rails.application.routes.draw do
   # root 'page#home'
   root 'page#home'
   
-
   # Example of regular route:
   #   get 'products/:id' => 'catalog#view'
 

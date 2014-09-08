@@ -11,7 +11,7 @@
    					<li><%= nav_link_to "Contact Us", "contact_us", contact_us_path, "current_page" %></li>
    				</ul>
   			</li>
-			  <li><%= nav_link_to "Products", "products", products_path, "current_page" %></li>
+			  
 				<li><%= nav_link_to "Articles", "articles", articles_path, "current_page" %>
 			    <ul>
    					<li><%= nav_link_to "Newsletter", "newsletter", newsletter_path, "current_page" %></li>
@@ -19,9 +19,16 @@
   			</li>				
 				<li><%= nav_link_to "Blog", "blog", blog_path, "current_page" %></li>
 				<li><%= nav_link_to "Calendar", "calendar", calendar_path, "current_page" %></li>
-				<li><%= nav_link_to "Login", "login", login_path, "current_page" %></li>	
+				<% if user_signed_in? %>
+					<li><%= link_to "Logout", destroy_user_session_path, :method => :delete %></li>
+				<% else %>
+					<li><%= link_to "Login", new_user_session_path %></li>
+				<% end %>	
 			</ul>
 		</div>
 </nav><!-- end of top nav -->
+<% if user_signed_in? %>
+	Welcome, <%= current_user.email %><br/>
+<% end %>
 
 
