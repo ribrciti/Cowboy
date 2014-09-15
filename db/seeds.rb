@@ -10,8 +10,9 @@
 require 'faker'
 include Faker
 
-formats = %w(Beta VHS IMAX HD SuperHD 4K DVD BlueRay)
 
+
+formats = %w(Beta VHS IMAX HD SuperHD 4K DVD BlueRay)
 images = %w(skis.jpg boots.jpg poles.jpg)
 
 Movie.destroy_all
@@ -26,10 +27,18 @@ Movie.destroy_all
 												format: formats[ rand(formats.length)],
 												:image => "movies/" + images[rand (images.length)],
 												:thumbnail => "movies/" + images[rand (images.length)]
-											) 
-	
+											)
+	movie.save!
+	if( ! movie.nil? )
+		(rand(0..10)).times do
+			movie.reviews.create( :author => "#{Name.name}", 
+														:title => "#{Company.bs}", 
+														:content => Lorem.sentences(3).join("<br/>").html_safe, 
+														:rating => rand(1..5)
+													)
+		end
+	end
 	puts movie.inspect
-	
 end
 
 

@@ -1,5 +1,7 @@
+<pid = notice><%= notice %></p>
 <h1>Listing movies</h1>
-
+<% if is_admin? %>
+<h2>ADMIN!</h2>
 <%= paginate @movies %>
 <%#= link_to "Previous", movies_path(:page => @prev_page) %> &nbsp;
 <%#= link_to "Next", movies_path(:page => @next_page) %>
@@ -33,6 +35,7 @@
         <% if current_user.try(:admin?) %>
         <td><%= link_to 'Edit', edit_movie_path(movie) %></td>
         <td><%= link_to 'Destroy', movie, method: :delete, data: { confirm: 'Are you sure?' } %></td>
+        <td><%=  link_to 'Email', spam_movie_path( movie ) %></td>
         <% end %>
       </tr>
     <% end %>
@@ -42,4 +45,5 @@
 <br>
 
 <%= link_to 'New Movie', new_movie_path %>
-
+<br/>
+<% end %>

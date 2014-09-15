@@ -1,5 +1,7 @@
 <p id="notice"><%= notice %></p>
 
+<p>Average Rating: <%= stars( @movie.reviews.average(:rating).round) %></p>
+
 <p>
   <strong>Name:</strong>
   <%= @movie.proper_name %>
@@ -40,5 +42,56 @@
   <%= image_tag @movie.image %>
 </p>
 
+<h3>Reviews</h3>
+<% @movie.reviews.each do | review |  %>
+  <h3><%= review.title %></h3>
+  <h3>About <%= time_ago_in_words(review.created_at) %>, ago, <%= review.author %> said: </h3>
+  <p><%= review.content %></p>
+  <p>Rating: <%= stars(review.rating) %></p>
+
+  <% if is_admin? %>
+    <%= link_to "Delete Review", movie_review_path( @movie, review ), 
+                data: {confirm: 'Are you sure?' },  
+                :method => :delete %>
+  <% end %>
+
+  <hr>
+<% end %>
+
+<%= form_for([@movie, @review]) do |f| %>
+  <% if @review.errors.any? %>
+    <div id="error_explanation">
+      <h2><%= pluralize(@review.errors.count, "error") %> prohibited this review from being saved:</h2>
+
+      <ul>
+      <% @review.errors.full_messages.each do |message| %>
+        <li><%= message %></li>
+      <% end %>
+      </ul>
+    </div>
+  <% end %>
+
+  <div class="field">
+    <%= f.label :title %><br>
+    <%= f.text_field :title %>
+  </div>
+  <div class="field">
+    <%= f.label :author %><br>
+    <%= f.text_field :author %>
+  </div>
+  <div class="field">
+    <%= f.label :content %><br>
+    <%= f.text_area :content %>
+  </div>
+  <div class="field">
+    <%= f.label :rating %><br>
+    <%= f.number_field :rating %>
+  </div>
+   <%= f.hidden_field :movie_id %>
+  <div class="actions">
+   <%= f.submit %>
+  </div>
+<% end %>
+<%=  link_to 'Email this movie', mail_movie_path( @movie ) %>
 <%= link_to 'Edit', edit_movie_path(@movie) %> |
 <%= link_to 'Back', movies_path %>

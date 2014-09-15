@@ -1,20 +1,38 @@
 class MoviesController < ApplicationController
-  before_action :set_movie, only: [:show, :edit, :update, :destroy]
-  before_action :authenticate, except: [ :index, :show ]
+  before_action :set_movie, only: [:show, :edit, :update, :destroy, :mail, :spam]
+  before_action :authenticate
+
+  def mail  #mail_movie_path
+   UserMailer.newsletter(@movie, current_user).deliver
+   redirect_to @movie, notice: 'Email sent.'
+  end
+
+  def spam    #spam_movie_path
+    # Get all of the users
+    # Loop throught and send an email to each one
+    users = User.all  #where( :newsletter => true )
+    users.each do | user |
+      UserMailer.newsletter(@movie, user).deliver
+    end
+    redirect_to movies_path, notice: 'Email sent.'
+  end
+
 
   # GET /movies
   # GET /movies.json
-  def index
+  def index    
     @page = params['page']
     #@prev_page = @page - 1 unless @page == 0
     #@next_page = @page + 1 unless (@page*5 > Movie.count)
     #@movies = Movie.all.limit(5).offset(@page * 5).order(:updated_at => :desc)
     @movies = Movie.page(@page).order(:updated_at => :desc)
+
   end
 
   # GET /movies/1
   # GET /movies/1.json
   def show
+    @review = Review.new
   end
 
   # GET /movies/new
